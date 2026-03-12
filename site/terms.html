@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service — Lockbox</title>
+<meta name="description" content="Terms of service for Lockbox, the crypto wallet for API keys.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300d87a'%3E%3Cpath d='M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0f0f14;
+    --bg-card: #1a1a24;
+    --border: #2a2a3a;
+    --text-primary: #e8eaf0;
+    --text-secondary: #9ba2b4;
+    --text-muted: #8890a3;
+    --accent: #00d87a;
+    --accent-dim: #00b368;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.7;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .page-header {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+  }
+  .page-header .inner {
+    max-width: 760px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .logo-icon {
+    width: 28px; height: 28px; background: var(--accent); border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .logo-icon svg { width: 16px; height: 16px; fill: var(--bg-primary); }
+  .logo-text {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 16px; color: var(--text-primary); letter-spacing: -0.5px;
+    text-decoration: none;
+  }
+
+  main {
+    max-width: 760px; margin: 0 auto; padding: 48px 24px 80px;
+  }
+  h1 {
+    font-size: 32px; font-weight: 700; letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+  .last-updated {
+    color: var(--text-muted); font-size: 14px; margin-bottom: 40px;
+  }
+  h2 {
+    font-size: 20px; font-weight: 700; margin-top: 40px; margin-bottom: 12px;
+    color: var(--text-primary);
+  }
+  p, ul, ol { margin-bottom: 16px; color: var(--text-secondary); font-size: 15px; }
+  ul, ol { padding-left: 24px; }
+  li { margin-bottom: 8px; }
+  strong { color: var(--text-primary); font-weight: 600; }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 40px; font-weight: 600; font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="inner">
+    <a href="/" class="logo-icon" aria-label="Lockbox home">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2z"/></svg>
+    </a>
+    <a href="/" class="logo-text">lockbox</a>
+  </div>
+</header>
+
+<main>
+  <h1>Terms of Service</h1>
+  <p class="last-updated">Last updated: 12 March 2026</p>
+
+  <h2>1. Acceptance</h2>
+  <p>By using Lockbox (the browser extension, CLI tool, VS Code extension, or dashboard at dashboard.yourlockbox.dev), you agree to these terms. If you don't agree, don't use the service.</p>
+
+  <h2>2. What Lockbox is</h2>
+  <p>Lockbox is a local-first, zero-knowledge tool for storing and managing API keys and secrets. It includes a Chrome extension, a command-line interface, a VS Code extension, and an optional cloud dashboard for sync and team features.</p>
+
+  <h2>3. Your responsibilities</h2>
+  <ul>
+    <li><strong>Master password:</strong> You are solely responsible for your master password and 12-word recovery phrase. We cannot recover your vault if you lose both. Store them safely.</li>
+    <li><strong>Lawful use:</strong> You agree to use Lockbox only for lawful purposes and in compliance with all applicable laws.</li>
+    <li><strong>Account security:</strong> You are responsible for maintaining the security of your account credentials and devices.</li>
+  </ul>
+
+  <h2>4. Free and Pro tiers</h2>
+  <p><strong>Free tier:</strong> Lockbox's core functionality (local vault, browser auto-fill, CLI) is free and always will be.</p>
+  <p><strong>Pro tier:</strong> Cloud sync, team vaults, and advanced features require a paid subscription at $5/month. Payments are processed by Stripe. You can cancel anytime from the dashboard; your subscription remains active until the end of the billing period.</p>
+
+  <h2>5. Open source</h2>
+  <p>Lockbox's source code is available under the MIT License at <a href="https://github.com/lockboxdev/lockbox" target="_blank" rel="noopener noreferrer">github.com/lockboxdev/lockbox</a>. You are free to fork, modify, and self-host. These Terms apply to the hosted service at yourlockbox.dev and dashboard.yourlockbox.dev.</p>
+
+  <h2>6. Data and encryption</h2>
+  <p>Lockbox uses client-side encryption. Your vault is encrypted before it leaves your device. We cannot access, read, or recover your stored secrets. See our <a href="/privacy.html">Privacy Policy</a> for details on what data we do and don't collect.</p>
+
+  <h2>7. Availability</h2>
+  <p>We aim for high availability but provide the service "as is" without uptime guarantees. The local extension and CLI work entirely offline. Cloud sync and dashboard features depend on third-party infrastructure (Supabase, Railway, Clerk).</p>
+
+  <h2>8. Limitation of liability</h2>
+  <p>To the maximum extent permitted by law, Lockbox and its contributors are not liable for any indirect, incidental, or consequential damages arising from your use of the service. This includes, but is not limited to, loss of data, loss of access to secrets, or security breaches resulting from compromised master passwords.</p>
+
+  <h2>9. Termination</h2>
+  <p>You can stop using Lockbox at any time by uninstalling the extension, deleting the CLI config, and/or deleting your dashboard account. We may suspend accounts that violate these terms or applicable law.</p>
+
+  <h2>10. Changes</h2>
+  <p>We may update these terms. Material changes will be communicated through the dashboard and extension changelog. Continued use after changes constitutes acceptance.</p>
+
+  <h2>11. Contact</h2>
+  <p>Questions about these terms? Email <a href="mailto:dev@yourlockbox.dev">dev@yourlockbox.dev</a>.</p>
+
+  <a href="/" class="back-link">&larr; Back to Lockbox</a>
+</main>
+
+</body>
+</html>

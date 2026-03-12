@@ -9,11 +9,18 @@
 <meta property="og:description" content="One extension. One password. All your API keys encrypted and ready when you need them. Works with Claude Code, Cursor, and any AI coding tool.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://yourlockbox.dev">
+<meta property="og:image" content="https://yourlockbox.dev/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Lockbox — The crypto wallet for your API keys">
+<meta name="twitter:description" content="One extension. One password. All your API keys encrypted and ready when you need them.">
+<meta name="twitter:image" content="https://yourlockbox.dev/og-image.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300d87a'%3E%3Cpath d='M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2z'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   html { scroll-behavior: smooth; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
   :root {
     --bg-primary: #0f0f14;
     --bg-secondary: #0f1218;
@@ -23,8 +30,8 @@
     --border: #2a2a3a;
     --border-bright: #3a3a4a;
     --text-primary: #e8eaf0;
-    --text-secondary: #8b92a5;
-    --text-muted: #5a6178;
+    --text-secondary: #9ba2b4;
+    --text-muted: #8890a3;
     --accent: #00d87a;
     --accent-dim: #00b368;
     --accent-glow: rgba(0, 216, 122, 0.15);
@@ -37,6 +44,7 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   body {
     font-family: 'Outfit', sans-serif;
@@ -52,8 +60,46 @@
     inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
     pointer-events: none;
-    z-index: 9999;
+    z-index: 1;
   }
+
+  /* ── Skip to content (A1) ── */
+  .skip-link {
+    position: absolute; top: -100px; left: 16px; z-index: 200;
+    background: var(--accent); color: var(--bg-primary);
+    padding: 8px 16px; border-radius: 0 0 8px 8px;
+    font-weight: 600; font-size: 14px; text-decoration: none;
+    transition: top 0.2s ease;
+  }
+  .skip-link:focus { top: 0; }
+
+  /* ── Mobile hamburger menu (S1) ── */
+  .hamburger {
+    display: none; background: none; border: none;
+    cursor: pointer; padding: 8px; color: var(--text-primary);
+  }
+  .hamburger svg { width: 24px; height: 24px; }
+
+  .mobile-menu {
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 15, 20, 0.97); backdrop-filter: blur(20px);
+    z-index: 150; flex-direction: column; align-items: center;
+    justify-content: center; gap: 24px;
+    animation: fadeInUp 0.3s ease both;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    color: var(--text-primary); text-decoration: none;
+    font-size: 18px; font-weight: 600; padding: 12px 24px;
+    border-radius: 8px; transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--accent); }
+  .mobile-menu-close {
+    position: absolute; top: 20px; right: 24px;
+    background: none; border: none; cursor: pointer; color: var(--text-secondary);
+    padding: 8px;
+  }
+  .mobile-menu-close svg { width: 24px; height: 24px; }
 
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -93,26 +139,26 @@
   .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
   .nav-links a:hover { color: var(--text-primary); }
 
-  .nav-cta {
-    background: var(--accent) !important; color: var(--bg-primary) !important;
-    padding: 8px 18px; border-radius: 8px; font-weight: 600 !important; transition: all 0.2s !important;
-    display: inline-flex !important; align-items: center; gap: 6px;
+  .nav-links a.nav-cta {
+    background: var(--accent); color: var(--bg-primary);
+    padding: 8px 18px; border-radius: 8px; font-weight: 600; transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 6px;
   }
 
-  .nav-cta:hover {
-    background: var(--accent-dim) !important;
+  .nav-links a.nav-cta:hover {
+    background: var(--accent-dim); color: var(--bg-primary);
     transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-glow);
   }
 
   .nav-cta svg { width: 14px; height: 14px; }
 
-  .nav-login {
-    border: 1px solid var(--border-bright) !important; color: var(--text-secondary) !important;
-    padding: 8px 18px; border-radius: 8px; font-weight: 600 !important; transition: all 0.2s !important;
+  .nav-links a.nav-login {
+    border: 1px solid var(--border-bright); color: var(--text-secondary);
+    padding: 8px 18px; border-radius: 8px; font-weight: 600; transition: all 0.2s;
   }
 
-  .nav-login:hover {
-    border-color: var(--accent) !important; color: var(--accent) !important;
+  .nav-links a.nav-login:hover {
+    border-color: var(--accent); color: var(--accent);
   }
 
   .feature-cta {
@@ -503,8 +549,19 @@
   .animate-in { opacity: 0; transform: translateY(24px); transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
   .animate-in.visible { opacity: 1; transform: translateY(0); }
 
+  /* ── Reduced motion (S6) ── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .animate-in { opacity: 1; transform: none; }
+  }
+
   @media (max-width: 768px) {
-    .nav-links a:not(.nav-cta):not(.nav-login) { display: none; }
+    .nav-links { display: none; }
+    .hamburger { display: block; }
     .features-grid, .problem-grid { grid-template-columns: 1fr; }
     .steps { grid-template-columns: 1fr; gap: 48px; }
     .pricing-grid { grid-template-columns: 1fr; }
@@ -525,6 +582,9 @@
 </head>
 <body>
 
+<!-- Skip to content (A1: Accessibility) -->
+<a href="#features" class="skip-link">Skip to content</a>
+
 <nav>
   <div class="nav-inner">
     <a href="#" class="logo">
@@ -537,16 +597,36 @@
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#compare">Compare</a>
-      <a href="https://dashboard.yourlockbox.dev" target="_blank">Dashboard</a>
-      <a href="https://github.com/lockboxdev/lockbox" target="_blank">GitHub</a>
-      <a href="https://dashboard.yourlockbox.dev" target="_blank" class="nav-login">Open Dashboard</a>
-      <a href="https://github.com/lockboxdev/lockbox-extension/releases/latest" target="_blank" class="nav-cta">
+      <a href="https://dashboard.yourlockbox.dev" target="_blank" rel="noopener noreferrer">Dashboard</a>
+      <a href="https://github.com/lockboxdev/lockbox" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://dashboard.yourlockbox.dev" target="_blank" rel="noopener noreferrer" class="nav-login">Open Dashboard</a>
+      <a href="https://github.com/lockboxdev/lockbox-extension/releases/latest" target="_blank" rel="noopener noreferrer" class="nav-cta">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Install Extension
       </a>
     </div>
+    <!-- Mobile hamburger (S1) -->
+    <button class="hamburger" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
   </div>
 </nav>
+
+<!-- Mobile menu overlay (S1) -->
+<div id="mobileMenu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <button class="mobile-menu-close" aria-label="Close menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <a href="#features">Features</a>
+  <a href="#pricing">Pricing</a>
+  <a href="#compare">Compare</a>
+  <a href="https://dashboard.yourlockbox.dev" target="_blank" rel="noopener noreferrer">Dashboard</a>
+  <a href="https://github.com/lockboxdev/lockbox" target="_blank" rel="noopener noreferrer">GitHub</a>
+  <a href="https://github.com/lockboxdev/lockbox-extension/releases/latest" target="_blank" rel="noopener noreferrer" class="nav-cta" style="margin-top:16px;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Install Extension
+  </a>
+</div>
 
 <div class="hero">
   <div class="hero-grid-bg"></div>
@@ -561,11 +641,11 @@
   <p class="hero-sub">One extension. One password. All your API keys encrypted and ready when you need them. Auto-detects keys across 20+ platforms and fills them in one click.</p>
 
   <div class="hero-actions">
-    <a href="https://github.com/lockboxdev/lockbox-extension/releases/latest" target="_blank" class="btn-primary" id="installBtn">
+    <a href="https://github.com/lockboxdev/lockbox-extension/releases/latest" target="_blank" rel="noopener noreferrer" class="btn-primary" id="installBtn">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       Install Lockbox Wallet
     </a>
-    <a href="https://dashboard.yourlockbox.dev" target="_blank" class="btn-secondary">
+    <a href="https://dashboard.yourlockbox.dev" target="_blank" rel="noopener noreferrer" class="btn-secondary">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
       Open Dashboard
     </a>
@@ -716,7 +796,7 @@
       <div class="feature-icon">📊</div>
       <h3>Dashboard Summary</h3>
       <p>See all your vaults and services at a glance from the web dashboard. Track which keys you have, when they were last used, and your security health score.</p>
-      <a href="https://dashboard.yourlockbox.dev" target="_blank" class="feature-cta">Open Dashboard &rarr;</a>
+      <a href="https://dashboard.yourlockbox.dev" target="_blank" rel="noopener noreferrer" class="feature-cta">Open Dashboard &rarr;</a>
       <span class="feature-tag tag-free">FREE</span>
     </div>
     <div class="feature-card">
@@ -776,14 +856,15 @@
 
   <div class="comparison-wrap animate-in">
     <table class="comparison">
+      <caption class="sr-only">Feature comparison of Lockbox versus Doppler, Infisical, 1Password, and EnvKey</caption>
       <thead>
         <tr>
-          <th>Feature</th>
-          <th class="col-lockbox-head">Lockbox</th>
-          <th>Doppler</th>
-          <th>Infisical</th>
-          <th>1Password</th>
-          <th>EnvKey</th>
+          <th scope="col">Feature</th>
+          <th scope="col" class="col-lockbox-head">Lockbox</th>
+          <th scope="col">Doppler</th>
+          <th scope="col">Infisical</th>
+          <th scope="col">1Password</th>
+          <th scope="col">EnvKey</th>
         </tr>
       </thead>
       <tbody>
@@ -877,7 +958,7 @@
         <li>Full CLI access</li>
         <li>Dashboard summary view</li>
       </ul>
-      <a href="https://github.com/lockboxdev/lockbox-extension/releases/latest" target="_blank" class="price-btn price-btn-free">Install Extension &mdash; Free</a>
+      <a href="https://github.com/lockboxdev/lockbox-extension/releases/latest" target="_blank" rel="noopener noreferrer" class="price-btn price-btn-free">Install Extension &mdash; Free</a>
     </div>
     <div class="price-card featured">
       <div class="price-name">Pro</div>
@@ -893,7 +974,7 @@
         <li>Priority support</li>
         <li>Licence key for CLI activation</li>
       </ul>
-      <a href="https://dashboard.yourlockbox.dev/dashboard/pricing" target="_blank" class="price-btn price-btn-pro">Upgrade to Pro</a>
+      <a href="https://dashboard.yourlockbox.dev/dashboard/pricing" target="_blank" rel="noopener noreferrer" class="price-btn price-btn-pro">Upgrade to Pro</a>
     </div>
     <div class="price-card coming-soon">
       <div class="price-name">Team</div>
@@ -907,7 +988,7 @@
         <li>SSO integration</li>
         <li>Easy team onboarding</li>
       </ul>
-      <a href="https://dashboard.yourlockbox.dev" target="_blank" class="price-btn price-btn-team">Join Team Waitlist</a>
+      <a href="https://dashboard.yourlockbox.dev" target="_blank" rel="noopener noreferrer" class="price-btn price-btn-team">Join Team Waitlist</a>
     </div>
   </div>
 </section>
@@ -918,14 +999,14 @@
     <h2>Secure your keys in 30 seconds.</h2>
     <p>Install the Lockbox wallet extension and never worry about leaking API keys again. Free, open source, and encrypted by default.</p>
     <div class="cta-buttons">
-      <a href="https://github.com/lockboxdev/lockbox-extension/releases/latest" target="_blank" class="btn-primary">
+      <a href="https://github.com/lockboxdev/lockbox-extension/releases/latest" target="_blank" rel="noopener noreferrer" class="btn-primary">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Install Lockbox Wallet
       </a>
-      <a href="https://dashboard.yourlockbox.dev" target="_blank" class="btn-secondary">Open Dashboard</a>
+      <a href="https://dashboard.yourlockbox.dev" target="_blank" rel="noopener noreferrer" class="btn-secondary">Open Dashboard</a>
     </div>
     <div class="cta-alt">
-      Or install the CLI: <a href="https://www.npmjs.com/package/lockbox-vault" target="_blank">npm install -g lockbox-vault</a>
+      Or install the CLI: <a href="https://www.npmjs.com/package/lockbox-vault" target="_blank" rel="noopener noreferrer">npm install -g lockbox-vault</a>
     </div>
   </div>
 </section>
@@ -934,7 +1015,7 @@
   <div class="footer-inner">
     <div class="footer-left">
       <div class="footer-brand">
-        <a href="#" class="logo" style="text-decoration:none;">
+        <a href="/" class="logo" style="text-decoration:none;">
           <div class="logo-icon">
             <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2z"/></svg>
           </div>
@@ -945,21 +1026,59 @@
       <span class="footer-tagline">Lockbox &mdash; The crypto wallet for your API keys</span>
     </div>
     <div class="footer-links">
-      <a href="https://github.com/lockboxdev/lockbox-extension/releases/latest" target="_blank">Extension</a>
-      <a href="https://dashboard.yourlockbox.dev" target="_blank">Dashboard</a>
-      <a href="https://www.npmjs.com/package/lockbox-vault" target="_blank">CLI (npm)</a>
-      <a href="https://github.com/lockboxdev/lockbox" target="_blank">GitHub</a>
-      <a href="https://dashboard.yourlockbox.dev/dashboard/pricing" target="_blank">Pricing</a>
+      <a href="https://github.com/lockboxdev/lockbox-extension/releases/latest" target="_blank" rel="noopener noreferrer">Extension</a>
+      <a href="https://dashboard.yourlockbox.dev" target="_blank" rel="noopener noreferrer">Dashboard</a>
+      <a href="https://www.npmjs.com/package/lockbox-vault" target="_blank" rel="noopener noreferrer">CLI (npm)</a>
+      <a href="https://github.com/lockboxdev/lockbox" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://dashboard.yourlockbox.dev/dashboard/pricing" target="_blank" rel="noopener noreferrer">Pricing</a>
       <a href="mailto:dev@yourlockbox.dev">Support</a>
+      <a href="/privacy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms of Service</a>
     </div>
   </div>
 </footer>
 
 <script>
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+  // Respect prefers-reduced-motion (S6)
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.animate-in').forEach(el => el.classList.add('visible'));
+  } else {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+  }
+
+  // Mobile menu open/close handlers (moved from inline onclick)
+  var mobileMenu = document.getElementById('mobileMenu');
+  var hamburger = document.querySelector('.hamburger');
+  var closeBtn = document.querySelector('.mobile-menu-close');
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', function() { mobileMenu.classList.add('open'); });
+  }
+  if (closeBtn && mobileMenu) {
+    closeBtn.addEventListener('click', function() { mobileMenu.classList.remove('open'); hamburger.focus(); });
+  }
+  // Close mobile menu when clicking an anchor link inside it
+  document.querySelectorAll('#mobileMenu a[href^="#"]').forEach(function(link) {
+    link.addEventListener('click', function() { mobileMenu.classList.remove('open'); });
+  });
+
+  // Mark decorative SVGs as aria-hidden for screen readers
+  document.querySelectorAll('a svg, button svg, .logo-icon svg, .feature-icon svg, .problem-emoji').forEach(function(el) {
+    el.setAttribute('aria-hidden', 'true');
+  });
+
+  // Mobile menu: close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const menu = document.getElementById('mobileMenu');
+      if (menu && menu.classList.contains('open')) {
+        menu.classList.remove('open');
+        document.querySelector('.hamburger').focus();
+      }
+    }
+  });
 </script>
 </body>
 </html>
